@@ -1,0 +1,82 @@
+{% extends 'decoder/base.html' %}
+
+{% block styles %}
+<style>
+  .procedure-wrapper {
+    max-width: 900px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  .procedure-wrapper h2 {
+    color: #2c3e50;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  .procedure-wrapper ol {
+    padding-left: 1.5rem;
+    line-height: 1.7;
+  }
+  .procedure-wrapper img {
+    max-width: 100%;
+    border-radius: 8px;
+    margin: 1rem 0;
+  }
+  .procedure-wrapper table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1.5rem;
+  }
+  .procedure-wrapper table, .procedure-wrapper th, .procedure-wrapper td {
+    border: 1px solid #dee2e6;
+  }
+  .procedure-wrapper th, .procedure-wrapper td {
+    padding: 0.75rem;
+    text-align: center;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="procedure-wrapper">
+  <h2>Procedure</h2>
+  <ol>
+    <li>Click on the <strong>Component</strong> button to place components on the table.</li>
+    <li>Make connections as per the circuit diagram and pin diagram of IC or according to the connection table.</li>
+    <li>Click on the <strong>Check Connections</strong> button. If connections are correct, click on 'OK'; the simulation will become active.</li>
+    <li>Provide the input by clicking toggle switches A<sub>0</sub>, A<sub>1</sub>, A<sub>2</sub>, and A<sub>3</sub>.</li>
+    <li>Fill the observed values in the Truth Table.</li>
+    <li>Verify the Truth Table by clicking on the <strong>Check</strong> button. If outputs are correct, click on 'OK'.</li>
+    <li>Click on the <strong>Reset</strong> button to reset the page.</li>
+  </ol>
+
+  <h3>Components</h3>
+  <ul>
+    <li>Breadboard</li>
+    <li>5V DC Supply</li>
+    <li>LEDs (L0–L9)</li>
+    <li>IC 7442</li>
+    <li>Switches</li>
+    <li>1kΩ Resistors (R0–R9)</li>
+  </ul>
+
+  <h3>Circuit Diagram</h3>
+  <img src="https://ade-iitr.vlabs.ac.in/exp/decimal-decoder/images/Fig.3circuitdiagram.png" alt="Circuit diagram of BCD to Decimal decoder">
+
+  <h3>IC 7442 Pin Diagram</h3>
+  <img src="https://ade-iitr.vlabs.ac.in/exp/decimal-decoder/images/Fig.4.png" alt="Pin diagram of IC 7442">
+  
+  <h3>Connection Table</h3>
+  <img src="https://ade-iitr.vlabs.ac.in/exp/decimal-decoder/images/Table1.png" alt="Pin diagram of IC 7442">
+  <br><br>
+  <ol start="3" style="font-family: 'Segoe UI', sans-serif; font-size: 1.1rem; line-height: 1.8;">
+    <li>Click on <strong>Check Connections</strong> button. If connections are right, click on 'OK', then <strong>Simulation</strong> will become active.</li>
+    <li>Provide the input by clicking toggle switches <strong>A<sub>0</sub>, A<sub>1</sub>, A<sub>2</sub>, A<sub>3</sub></strong>.</li>
+    <li>Fill the observed values in the <strong>Truth Table</strong>.</li>
+    <li>Verify <strong>Truth Table</strong> by clicking on <strong>Check</strong> button, if outputs are correct then click on 'OK'.</li>
+    <li>Click on the <strong>Reset</strong> button to reset the page.</li>
+  </ol>
+</div>
+{% endblock %}

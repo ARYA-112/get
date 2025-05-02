@@ -1,0 +1,294 @@
+{% extends 'decoder/base.html' %}
+
+{% block content %}
+    <!-- BCD to Decimal Decoder Section (with box and centered) -->
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <title>BCD‑to‑Decimal Decoder • Full Simulation (IC 7442)</title>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <style>
+      /*
+      =====================================================================
+         GLOBAL CSS VARIABLES & RESET
+      =====================================================================*/
+      :root{
+        --bg-light:#f4f6fb;
+        --bg-dark:#1e2130;
+        --text-light:#212529;
+        --text-dark:#e4e6ef;
+        --accent:#0d6efd;
+        --led-off:#3a3a3a;
+        --led-on:#e74c3c;
+        --panel-bg:#ffffff;
+        --panel-shadow:rgba(0,0,0,.08);
+      }
+      /* Dark‑theme overrides */
+      [data-theme="dark"]{
+        --bg-light:var(--bg-dark);
+        --text-light:var(--text-dark);
+        --panel-bg:#2b2e44;
+        --panel-shadow:rgba(0,0,0,.35);
+        --led-off:#444;
+      }
+    
+      *,*::before,*::after{box-sizing:border-box;}
+      body{margin:0;padding:0;font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg-light);color:var(--text-light);}
+    
+      /*
+      =====================================================================
+         NAVBAR
+      =====================================================================*/
+      nav{display:flex;align-items:center;justify-content:space-between;padding:8px 16px;background:#fff;box-shadow:0 2px 4px var(--panel-shadow);}
+      nav h1{margin:0;font-size:1.25rem;}
+      nav .controls{display:flex;align-items:center;gap:8px;}
+      nav button, nav input[type="color"]{cursor:pointer;border:1px solid #ccc;border-radius:4px;padding:4px 6px;background:#fff;color:inherit;}
+    
+      /*
+      =====================================================================
+         SWITCHES & LEDS
+      =====================================================================*/
+      .switch-bank{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:16px 0;}
+      .switch{display:flex;flex-direction:column;align-items:center;font-size:.9rem;}
+      .switch input{width:20px;height:20px;}
+    
+      .led-bank{display:flex;justify-content:center;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+      .led{width:46px;height:46px;border-radius:50%;background:var(--led-off);transition:all .25s ease;box-shadow:inset 0 0 6px rgba(0,0,0,.6);}
+      .led.on{background:var(--led-on);box-shadow:0 0 10px var(--led-on);}
+    
+      /* Truth table styling */
+      table{width:100%;border-collapse:collapse;font-size:.9rem;margin-bottom:24px;}
+      th,td{border:1px solid #ccc;padding:4px;text-align:center;}
+      tr.active{background:#d1e7dd;font-weight:600;}
+    
+      /* Panels */
+      .panel{background:var(--panel-bg);border-radius:8px;padding:16px;box-shadow:0 2px 6px var(--panel-shadow);margin-bottom:24px;}
+      h2{text-align:center;margin:12px 0 8px;}
+      h3{margin:8px 0;}
+    
+      /* Accordion */
+      details{border:1px solid #ccc;border-radius:4px;margin-bottom:8px;}
+      details[open]{background:#f8f9fa;}
+      summary{padding:6px 10px;cursor:pointer;font-weight:600;}
+      summary::-webkit-details-marker{display:none;}
+      /* History list */
+      .history{max-height:160px;overflow:auto;font-family:monospace;font-size:.85rem;}
+      </style>
+    </head>
+    <body>
+    <!-- ===================================================================
+         NAVIGATION BAR
+         ===================================================================-->
+    <nav>
+      <h1>BCD‑to‑Decimal Decoder</h1>
+      <div class="controls">
+        <input type="color" id="colorPicker" title="Pick LED color">
+        <button id="themeBtn" title="Toggle Theme">🌗</button>
+      </div>
+    </nav>
+    <main style="max-width:900px;margin:0 auto;padding:0 12px;">
+      <h2>IC 7442 Interactive Simulation</h2>
+      <!-- ===============================================================
+           SWITCH BANK
+           ===============================================================-->
+      <section class="switch-bank panel" id="switchSection">
+        <div class="switch"><label>A₃</label><input type="checkbox" id="A3"></div>
+        <div class="switch"><label>A₂</label><input type="checkbox" id="A2"></div>
+        <div class="switch"><label>A₁</label><input type="checkbox" id="A1"></div>
+        <div class="switch"><label>A₀</label><input type="checkbox" id="A0"></div>
+        <button style="margin-left:12px" id="resetBtn">Reset</button>
+        <button id="autoBtn">Start Auto‑Run</button>
+      </section>
+      <div class="panel" style="text-align:center;font-size:1.1rem" id="displayPanel">
+        Binary: <span id="binDisp">0000</span> | Decimal: <span id="decDisp">0</span>
+      </div>
+      <!-- ===============================================================
+           LED BANK
+           ===============================================================-->
+      <section class="led-bank panel" id="ledBank">
+        <div class="led" id="D0" title="D0"></div>
+        <div class="led" id="D1" title="D1"></div>
+        <div class="led" id="D2" title="D2"></div>
+        <div class="led" id="D3" title="D3"></div>
+        <div class="led" id="D4" title="D4"></div>
+        <div class="led" id="D5" title="D5"></div>
+        <div class="led" id="D6" title="D6"></div>
+        <div class="led" id="D7" title="D7"></div>
+        <div class="led" id="D8" title="D8"></div>
+        <div class="led" id="D9" title="D9"></div>
+      </section>
+      <!-- ===============================================================
+           TRUTH TABLE
+           ===============================================================-->
+      <section class="panel">
+        <h3>Truth Table (Active Row Highlighted)</h3>
+        <table id="truthTable"><thead><tr><th>BCD (A₃A₂A₁A₀)</th><th>Decimal</th><th>Active LED</th></tr></thead><tbody>
+          <tr id="row0"><td>0000</td><td>0</td><td>D0</td></tr>
+          <tr id="row1"><td>0001</td><td>1</td><td>D1</td></tr>
+          <tr id="row2"><td>0010</td><td>2</td><td>D2</td></tr>
+          <tr id="row3"><td>0011</td><td>3</td><td>D3</td></tr>
+          <tr id="row4"><td>0100</td><td>4</td><td>D4</td></tr>
+          <tr id="row5"><td>0101</td><td>5</td><td>D5</td></tr>
+          <tr id="row6"><td>0110</td><td>6</td><td>D6</td></tr>
+          <tr id="row7"><td>0111</td><td>7</td><td>D7</td></tr>
+          <tr id="row8"><td>1000</td><td>8</td><td>D8</td></tr>
+          <tr id="row9"><td>1001</td><td>9</td><td>D9</td></tr>
+        </tbody></table>
+      </section>
+      <!-- ===============================================================
+           PRACTICE MODE
+           ===============================================================-->
+      <section class="panel" id="practiceSection">
+        <h3>Practice Mode</h3>
+        <p>Target Decimal: <strong id="targetVal">0</strong></p>
+        <button id="newTargetBtn">New Target</button>
+        <button id="checkBtn">Check</button>
+        <p id="practiceMsg"></p>
+      </section>
+      <!-- ===============================================================
+           INPUT HISTORY
+           ===============================================================-->
+      <section class="panel">
+        <h3>Input History (Last 20)</h3>
+        <ol id="historyList" class="history"></ol>
+      </section>
+      <!-- ===============================================================
+           DECODER INTERNALS (Accordion)
+           ===============================================================-->
+
+    </main>
+    <script>
+     
+    // Grab DOM elements -------------------------------------------------------
+    const inputs = ['A3','A2','A1','A0'].map(id=>document.getElementById(id));
+    const leds   = [...Array(10)].map((_,i)=>document.getElementById('D'+i));
+    const rows   = [...Array(10)].map((_,i)=>document.getElementById('row'+i));
+    const binDisp=document.getElementById('binDisp');
+    const decDisp=document.getElementById('decDisp');
+    const historyList=document.getElementById('historyList');
+    
+    // State variables ---------------------------------------------------------
+    let history=[];
+    const HISTORY_MAX=20;
+    let autoTimer=null;
+    let target=0; // for practice mode
+    
+    // Utility: Update all UI elements based on current input state -----------
+    function updateUI(){
+      // Compute decimal value from switches
+      const val=(inputs[0].checked<<3)|(inputs[1].checked<<2)|(inputs[2].checked<<1)|(inputs[3].checked);
+    
+      // Update LED states & table highlight
+      leds.forEach((led,i)=>led.classList.toggle('on',i===val));
+      rows.forEach((row,i)=>row.classList.toggle('active',i===val));
+    
+      // Update displays
+      binDisp.textContent=val.toString(2).padStart(4,'0');
+      decDisp.textContent=val;
+    
+      // Append to history with timestamp
+      const ts=new Date().toLocaleTimeString();
+      history.unshift(`${ts} – ${binDisp.textContent} (${val})`);
+      if(history.length>HISTORY_MAX) history.pop();
+      renderHistory();
+    }
+    
+    // Render history list ------------------------------------------------------
+    function renderHistory(){
+      historyList.innerHTML=history.map(item=>`<li>${item}</li>`).join('');
+    }
+    
+    // Input change event listeners -------------------------------------------
+    inputs.forEach(inp=>inp.addEventListener('change',updateUI));
+    
+    // Reset button -------------------------------------------------------------
+    document.getElementById('resetBtn').addEventListener('click',()=>{
+      inputs.forEach(i=>i.checked=false);
+      updateUI();
+    });
+    
+    // Auto‑run toggle ----------------------------------------------------------
+    document.getElementById('autoBtn').addEventListener('click',e=>{
+      if(autoTimer){
+        clearInterval(autoTimer);
+        autoTimer=null;
+        e.target.textContent='Start Auto‑Run';
+      }else{
+        let n=0;
+        autoTimer=setInterval(()=>{
+          setValue(n);
+          n=(n+1)%10;
+        },700);
+        e.target.textContent='Stop Auto‑Run';
+      }
+    });
+    
+    function setValue(val){
+      inputs[0].checked=!!(val&8);
+      inputs[1].checked=!!(val&4);
+      inputs[2].checked=!!(val&2);
+      inputs[3].checked=!!(val&1);
+      updateUI();
+    }
+    
+    // Practice mode ------------------------------------------------------------
+    const targetEl=document.getElementById('targetVal');
+    function newTarget(){
+      target=Math.floor(Math.random()*10);
+      targetEl.textContent=target;
+      document.getElementById('practiceMsg').textContent='Configure switches to match target.';
+    }
+    document.getElementById('newTargetBtn').addEventListener('click',newTarget);
+    document.getElementById('checkBtn').addEventListener('click',()=>{
+      const cur=parseInt(decDisp.textContent,10);
+      const msg=document.getElementById('practiceMsg');
+      msg.textContent= cur===target ? '✅ Correct! Well done.' : '❌ Not yet, try again.';
+    });
+    
+    // Theme & color picker -----------------------------------------------------
+    const themeBtn=document.getElementById('themeBtn');
+    themeBtn.addEventListener('click',()=>{
+      const cur=document.documentElement.getAttribute('data-theme')||'light';
+      document.documentElement.setAttribute('data-theme',cur==='light'?'dark':'light');
+    });
+    document.getElementById('colorPicker').addEventListener('input',e=>{
+      document.documentElement.style.setProperty('--led-on',e.target.value);
+    });
+    
+    // Initialize ---------------------------------------------------------------
+    newTarget();
+    updateUI();
+    // -------------------------------------------------------------------------
+    // Export History to CSV
+    // -------------------------------------------------------------------------
+    function exportCSV(){
+      if(history.length===0){alert('Nothing to export yet.');return;}
+      const header='Timestamp,Binary,Decimal\n';
+      const csv=header+history.map(h=>{
+        const parts=h.split(' – ');
+        const ts=parts[0];
+        const bd=parts[1].split(' ');
+        const bin=bd[0];
+        const dec=bd[1].replace(/[()]/g,'');
+        return `${ts},${bin},${dec}`;
+      }).join('\n');
+      const blob=new Blob([csv],{type:'text/csv'});
+      const url=URL.createObjectURL(blob);
+      const a=document.createElement('a');
+      a.href=url;
+      a.download='decoder_history.csv';
+      a.click();
+    }
+    document.addEventListener('DOMContentLoaded',()=>{
+      const exp=document.createElement('button');
+      exp.textContent='Export CSV';
+      exp.style.marginLeft='8px';
+      document.querySelector('.controls').appendChild(exp);
+      exp.addEventListener('click',exportCSV);
+    });
+    
+   </script>
+    </body>
+    </html>
+{% endblock %}

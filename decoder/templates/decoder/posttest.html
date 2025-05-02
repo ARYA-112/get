@@ -1,0 +1,350 @@
+
+
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <!--Google Tag Manager-->
+    <script class="gtm">
+          var dataLayer = [{
+          'labName': 'Analog and Digital Electronics I',
+          'discipline': 'Electronics and Communication Engineering',
+          'college': 'IITR',
+          'phase': '3-ext',
+          'expName': 'To design a BCD to Decimal decoder',
+          'expShortName': 'decimal-decoder'
+          }];
+      
+          (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+          j=d.createElement(s),dl=l!='dataLayer'?'&amp;l='+l:'';j.async=true;j.src=
+          'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+          })(window,document,'script','dataLayer','GTM-W59SWTR');
+        </script>
+    <!--End Google Tag Manager-->
+    <meta charset="utf-8"/>
+    <meta content="IE=edge" http-equiv="X-UA-Compatible"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
+    <meta content="decimal-decoder" name="experiment-short-name"/>
+    <meta content="IITR" name="developer-institute"/>
+    <meta content="TO DESIGN A BCD TO DECIMAL DECODER." name="learning-unit"/>
+    <meta content="Posttest" name="task-name"/>
+    <!-- For iPhone -->
+    <meta content="#4076e0" name="msapplication-TileColor"/>
+    <!-- Chrome, Firefox OS and Opera -->
+    <meta content="#4076e0" name="theme-color"/>
+    <!-- Windows Phone -->
+    <meta content="#4076e0" name="msapplication-navbutton-color"/>
+    <title>Virtual Labs</title>
+    <link href="./assets/images/favicon.ico" rel="shortcut icon"/>
+    <link href="./assets/css/bootstrap.min.css" rel="stylesheet"/>
+    <link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/4.0.0/github-markdown.min.css" integrity="sha512-Oy18vBnbSJkXTndr2n6lDMO5NN31UljR8e/ICzVPrGpSud4Gkckb8yUpqhKuUNoE+o9gAb4O/rAxxw1ojyUVzg==" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&amp;family=Raleway&amp;display=swap" rel="stylesheet"/>
+    <link href="./assets/fonts/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet"/>
+    <link href="./assets/css/github-markdown.min.css" rel="stylesheet"/>
+    <link href="./assets/css/vlabs-style.css" rel="stylesheet"/>
+    <link href="./assets/css/toast.css" rel="stylesheet"/>
+    <link href="./assets/katex_assets/katex.min.css" rel="stylesheet"/>
+    <script src="./assets/js/jquery-3.4.1.slim.min.js"></script>
+    <script crossorigin="anonymous" integrity="sha384-q2kxQ16AaE6UbzuKqyBE9/u/KzioAlnx2maXQHiDX9d4/zp8Ok3f+M7DPm+Ib6IU" src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script crossorigin="anonymous" integrity="sha384-pQQkAEnwaBkjpqZ8RU1fF1AKtTcHJwFl3pblpTlHXybJjHpMYo79HY3hIi4NKxyj" src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <style>
+        h1 {
+        font-size: 1.8rem;
+        }
+        h2 {
+        font-size: 1.4rem;
+        }
+        h3 {
+        font-size: 1.2rem;
+        }
+    
+        h2, h3 {
+        font-weight: 800;
+        }
+      </style>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" rel="stylesheet"/><style>
+    #quiz {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1.5rem;
+      background: #ffffff;
+      border-radius: 15px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .question {
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-top: 20px;
+      color: #2c3e50;
+    }
+    .answers label {
+      display: block;
+      background: #f1f1f1;
+      padding: 10px 15px;
+      margin: 8px 0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+    .answers label:hover {
+      background: #dfe6e9;
+    }
+    .answers input[type="radio"] {
+      margin-right: 10px;
+    }
+    #submit {
+      display: block;
+      width: 100%;
+      margin-top: 30px;
+      padding: 12px;
+      font-size: 1rem;
+      font-weight: 600;
+      background-color: #4076e0;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      transition: background 0.3s ease;
+    }
+    #submit:hover {
+      background-color: #2e5bbd;
+    }
+    #results {
+      margin-top: 20px;
+      font-weight: bold;
+      color: green;
+    }
+    </style></head>
+
+ <body>
+  {% extends 'decoder/base.html' %}
+
+{% block content %}
+</div> <div class="vlabs-page-content px-5 pb-4 flex-grow-1 markdown-body">
+  <div class="text-center fix-spacing">
+  <h2 id="to-design-a-bcd-to-decimal-decoder">To design a BCD to Decimal decoder.</h2>
+  </div>
+  <div id="quiz">
+  <div class="question">
+                    Fig. 1 shows a BCD to decimal decoder. What inputs (A₃, A₂, A₁, A₀) are required to produce the output levels as shown?
+                  </div>
+  <div class="answers">
+  <label>
+  <input name="question0" type="radio" value="a"/>
+                      a: A BCD to decimal decoder with inputs 0,1,1,1
+                    </label>
+  <label>
+  <input name="question0" type="radio" value="b"/>
+                      b: A binary to decimal encoder with inputs 0,1,1,1
+                    </label>
+  <label>
+  <input name="question0" type="radio" value="c"/>
+                      c: A decimal to binary decoder with inputs 1,1,1,0
+                    </label>
+  <label>
+  <input name="question0" type="radio" value="d"/>
+                      d: A decimal to BCD encoder with inputs 1,1,1,0
+                    </label>
+  </div>
+  <div class="question">
+                    Which statement below best describes the function of a decoder?
+                  </div>
+  <div class="answers">
+  <label>
+  <input name="question1" type="radio" value="a"/>
+                      a: Decoders are special ICs that are used to make it possible for one brand of computer to talk to another.
+                    </label>
+  <label>
+  <input name="question1" type="radio" value="b"/>
+                      b: A decoder will convert a binary number into a specific output representing a particular character or digit.
+                    </label>
+  <label>
+  <input name="question1" type="radio" value="c"/>
+                      c: A decoder will convert a decimal number into a proper binary equivalent.
+                    </label>
+  <label>
+  <input name="question1" type="radio" value="d"/>
+                      d: Decoders are used to prevent improper operation of digital system.
+                    </label>
+  </div>
+  <div class="question">
+                    What is the application of BCD to decimal decoder IC?
+                  </div>
+  <div class="answers">
+  <label>
+  <input name="question2" type="radio" value="a"/>
+                      a: Inverter
+                    </label>
+  <label>
+  <input name="question2" type="radio" value="b"/>
+                      b: Buffer
+                    </label>
+  <label>
+  <input name="question2" type="radio" value="c"/>
+                      c: Adder
+                    </label>
+  <label>
+  <input name="question2" type="radio" value="d"/>
+                      d: LED Driver
+                    </label>
+  </div>
+  <div class="question">
+                    The other name of BCD is
+                  </div>
+  <div class="answers">
+  <label>
+  <input name="question3" type="radio" value="a"/>
+                      a: Packet decimal
+                    </label>
+  <label>
+  <input name="question3" type="radio" value="b"/>
+                      b: Binary decimal
+                    </label>
+  <label>
+  <input name="question3" type="radio" value="c"/>
+                      c: Hexagonal decimal
+                    </label>
+  <label>
+  <input name="question3" type="radio" value="d"/>
+                      d: Excess-3 code
+                    </label>
+  </div>
+  <div class="question">
+                    One way to convert BCD to binary using the hardware approach is
+                  </div>
+  <div class="answers">
+  <label>
+  <input name="question4" type="radio" value="a"/>
+                      a: By using MSI IC circuits.
+                    </label>
+  <label>
+  <input name="question4" type="radio" value="b"/>
+                      b: By using a keyboard encoder.
+                    </label>
+  <label>
+  <input name="question4" type="radio" value="c"/>
+                      c: By using an ALU.
+                    </label>
+  <label>
+  <input name="question4" type="radio" value="d"/>
+                      d: By using UART.
+                    </label>
+  </div>
+  <div class="question">
+                    A decoder can be used as a demultiplexer by
+                  </div>
+  <div class="answers">
+  <label>
+  <input name="question5" type="radio" value="a"/>
+                      a: Trying all enable pins LOW.
+                    </label>
+  <label>
+  <input name="question5" type="radio" value="b"/>
+                      b: Trying all data-select lines LOW.
+                    </label>
+  <label>
+  <input name="question5" type="radio" value="c"/>
+                      c: Trying all data-select lines HIGH.
+                    </label>
+  <label>
+  <input name="question5" type="radio" value="d"/>
+                      d: Using the input lines for data selection and an enable line for data input.
+                    </label>
+  </div>
+  <div class="question">
+                    The main advantage of BCD code over other codes is
+                  </div>
+  <div class="answers">
+  <label>
+  <input name="question6" type="radio" value="a"/>
+                      a: Solving an arithmetic question in BCD is much faster.
+                    </label>
+  <label>
+  <input name="question6" type="radio" value="b"/>
+                      b: Number of bits is reduced.
+                    </label>
+  <label>
+  <input name="question6" type="radio" value="c"/>
+                      c: Decimal number can easily be decoded.
+                    </label>
+  <label>
+  <input name="question6" type="radio" value="d"/>
+                      d: There is no wastage of bits in BCD.
+                    </label>
+  </div>
+  <div class="question">
+                    Can positive and negative integers be represented in BCD?
+                  </div>
+  <div class="answers">
+  <label>
+  <input name="question7" type="radio" value="a"/>
+                      a: No
+                    </label>
+  <label>
+  <input name="question7" type="radio" value="b"/>
+                      b: Yes
+                    </label>
+  <label>
+  <input name="question7" type="radio" value="c"/>
+                      c: Not sure
+                    </label>
+  <label>
+  <input name="question7" type="radio" value="d"/>
+                      d: Don’t know
+                    </label>
+  </div>
+  <div class="question">
+                    To represent a 3-digit decimal number in BCD, the minimum number of bits required are
+                  </div>
+  <div class="answers">
+  <label>
+  <input name="question8" type="radio" value="a"/>
+                      a: 4
+                    </label>
+  <label>
+  <input name="question8" type="radio" value="b"/>
+                      b: 12
+                    </label>
+  <label>
+  <input name="question8" type="radio" value="c"/>
+                      c: 8
+                    </label>
+  <label>
+  <input name="question8" type="radio" value="d"/>
+                      d: 6
+                    </label>
+  </div>
+  <div class="question">
+                    To deal with currency which of the following codes is preferred?
+                  </div>
+  <div class="answers">
+  <label>
+  <input name="question9" type="radio" value="a"/>
+                      a: Excess-3 code
+                    </label>
+  <label>
+  <input name="question9" type="radio" value="b"/>
+                      b: Binary code
+                    </label>
+  <label>
+  <input name="question9" type="radio" value="c"/>
+                      c: Gray code
+                    </label>
+  <label>
+  <input name="question9" type="radio" value="d"/>
+                      d: BCD code
+                    </label>
+  </div>
+  </div>
+  <button class="btn btn-primary" id="submit">Submit Quiz</button>
+  <div id="results"></div>
+  </div>
+  
+ 
+   {% endblock %}
+ </body>
+</html>
